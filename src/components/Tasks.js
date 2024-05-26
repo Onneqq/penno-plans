@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Checkbox,
+  IconButton,
+} from "@mui/material";
 
 function Tasks() {
   const [tasks, setTasks] = useState([]);
@@ -43,38 +54,54 @@ function Tasks() {
   };
 
   return (
-    <div>
-      <h1>Task Planner</h1>
-      <input
-        type="text"
+    <Container>
+      <Typography variant="h2" gutterBottom>
+        Task Planner
+      </Typography>
+      <TextField
+        label="Title"
         name="title"
-        placeholder="Title"
         value={newTask.title}
         onChange={handleInputChange}
+        fullWidth
+        margin="normal"
       />
-      <input
-        type="text"
+      <TextField
+        label="Description"
         name="description"
-        placeholder="Description"
         value={newTask.description}
         onChange={handleInputChange}
+        fullWidth
+        margin="normal"
       />
-      <button onClick={addTask}>Add Task</button>
-      <ul>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={addTask}
+        style={{ marginTop: "1rem" }}
+      >
+        Add Task
+      </Button>
+      <List>
         {tasks.map((task) => (
-          <li key={task.id}>
-            <span
-              style={{
-                textDecoration: task.completed ? "line-through" : "none",
-              }}
-            >
-              {task.title}: {task.description}
-            </span>
-            <button onClick={() => markAsComplete(task.id)}>Complete</button>
-          </li>
+          <ListItem
+            key={task.id}
+            dense
+            button
+            onClick={() => markAsComplete(task.id)}
+            style={{ textDecoration: task.completed ? "line-through" : "none" }}
+          >
+            <Checkbox checked={task.completed} tabIndex={-1} disableRipple />
+            <ListItemText primary={`${task.title}: ${task.description}`} />
+            <IconButton
+              edge="end"
+              aria-label="complete"
+              onClick={() => markAsComplete(task.id)}
+            ></IconButton>
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Container>
   );
 }
 
